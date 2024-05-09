@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget
+    id="nedpt.reactvistimeline.ReactVisTimeline"
+    pluginWidget="true"
+    needsEntityContext="true"
+    offlineCapable="true"
+    supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd"
+>
+    <name>React Vis Timeline</name>
+    <description>VisTimeline based on https://github.com/ChadJPetersen/react-vis-timeline.</description>
+    <icon />
+    <properties>
+        <propertyGroup caption="Items">
+            <propertyGroup caption="Main">
+                <property key="visItems" type="datasource" isList="true">
+                    <caption>Items</caption>
+                    <description />
+                </property>
+                <property key="ItemID" type="attribute" dataSource="visItems">
+                    <caption>Item ID</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="ItemContent" type="attribute" dataSource="visItems">
+                    <caption>Content</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="Start" type="attribute" dataSource="visItems">
+                    <caption>Start</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="DateTime" />
+                    </attributeTypes>
+                </property>
+                <property key="End" type="attribute" dataSource="visItems">
+                    <caption>End</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="DateTime" />
+                    </attributeTypes>
+                </property>
+                <property key="ItemType" type="attribute" dataSource="visItems">
+                    <caption>Type</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="Enum" />
+                    </attributeTypes>
+                </property>
+                <property key="ClassName" type="attribute" dataSource="visItems">
+                    <caption>Class Name</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="Description" type="attribute" dataSource="visItems">
+                    <caption>Description</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+                <property key="Group" type="attribute" dataSource="visItems">
+                    <caption>Group</caption>
+                    <description />
+                    <attributeTypes>
+                        <attributeType name="String" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Editability">
+                <property key="IsRemove" type="attribute" dataSource="visItems">
+                    <caption>Removal</caption>
+                    <description>
+                        If true, item can be deleted by first selecting it, and then clicking the delete button on the
+                        top right of the item. See section Editing Items for a detailed explanation.
+                    </description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+                <property key="IsUpdateGroup" type="attribute" dataSource="visItems">
+                    <caption>Groups</caption>
+                    <description>
+                        If true, item can be dragged from one group to another. Only applicable when the Timeline has
+                        groups.
+                    </description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+                <property key="IsUpdateTime" type="attribute" dataSource="visItems">
+                    <caption>Time</caption>
+                    <description>If true, items can be dragged to another moment in time.</description>
+                    <attributeTypes>
+                        <attributeType name="Boolean" />
+                    </attributeTypes>
+                </property>
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Groups">
+            <property key="visGroups" type="datasource" isList="true">
+                <caption>Groups</caption>
+                <description />
+            </property>
+            <property key="GroupID" type="attribute" dataSource="visGroups">
+                <caption>Group ID</caption>
+                <description />
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="GroupContent" type="attribute" dataSource="visGroups">
+                <caption>Content</caption>
+                <description />
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="TreeLevel" type="attribute" dataSource="visGroups">
+                <caption>Tree Level</caption>
+                <description />
+                <attributeTypes>
+                    <attributeType name="Integer" />
+                </attributeTypes>
+            </property>
+            <property key="NestedGroups" type="attribute" dataSource="visGroups">
+                <caption>Nested Groups</caption>
+                <description>eg: [1, 2, 3, 4, 5, 6]</description>
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Options">
+            <propertyGroup caption="Main">
+                <property key="Width" type="expression" defaultValue="'100%'">
+                    <caption>Width</caption>
+                    <description />
+                    <returnType type="String" />
+                </property>
+                <property key="Height" type="expression" defaultValue="">
+                    <caption>Height</caption>
+                    <description />
+                    <returnType type="String" />
+                </property>
+                <property key="TimelineStart" type="expression">
+                    <caption>Start Date</caption>
+                    <description />
+                    <returnType type="DateTime" />
+                </property>
+                <property key="TimelineEnd" type="expression">
+                    <caption>End Date</caption>
+                    <description />
+                    <returnType type="DateTime" />
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Editability">
+                <property key="optionsAdd" type="expression" defaultValue="false">
+                    <caption>Add</caption>
+                    <description>If true, new items can be created by double tapping an empty space in the Timeline.</description>
+                    <returnType type="Boolean" />
+                </property>
+                <property key="optionsRemove" type="expression" defaultValue="false">
+                    <caption>Remove</caption>
+                    <description>If true, items can be deleted by first selecting them, and then clicking the delete button on the top right of the item.</description>
+                    <returnType type="Boolean" />
+                </property>
+                <property key="optionsUpdateGroup" type="expression" defaultValue="false">
+                    <caption>Update Group</caption>
+                    <description>If true, items can be dragged from one group to another. Only applicable when the Timeline has groups.</description>
+                    <returnType type="Boolean" />
+                </property>
+                <property key="optionsUpdateTime" type="expression" defaultValue="false">
+                    <caption>Update Time</caption>
+                    <description>If true, items can be dragged to another moment in time.</description>
+                    <returnType type="Boolean" />
+                </property>
+                <property key="optionsOverrideItems" type="expression" defaultValue="false">
+                    <caption>Override Items</caption>
+                    <description>If true, item specific editable properties are overridden by timeline settings.</description>
+                    <returnType type="Boolean" />
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Snap">
+                <property key="isSnap" type="expression">
+                    <caption>Apply snapping?</caption>
+                    <description />
+                    <returnType type="Boolean" />
+                </property>
+                <!-- <property key="SnapDate" type="expression">
+                    <caption>Date</caption>
+                    <description></description>
+                    <returnType type="DateTime" />
+                </property>
+                <property key="SnapScale" type="expression">
+                    <caption>Scale</caption>
+                    <description></description>
+                    <returnType type="Integer" />
+                </property>
+                <property key="SnapStep" type="expression">
+                    <caption>Step</caption>
+                    <description></description>
+                    <returnType type="Integer" />
+                </property> -->
+            </propertyGroup>
+        </propertyGroup>
+        <propertyGroup caption="Events">
+            <property key="eventItemId" type="attribute">
+                <caption>Id</caption>
+                <description />
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
+            <property key="eventStart" type="attribute">
+                <caption>Start Date</caption>
+                <description />
+                <attributeTypes>
+                    <attributeType name="DateTime" />
+                </attributeTypes>
+            </property>
+            <property key="eventEnd" type="attribute">
+                <caption>End Date</caption>
+                <description />
+                <attributeTypes>
+                    <attributeType name="DateTime" />
+                </attributeTypes>
+            </property>
+            <property key="onAddAction" type="action">
+                <caption>On Add</caption>
+                <description>Callback function triggered when an item is about to be added: when the user double taps an empty space in the Timeline. Only applicable when both options selectable and editable.add are set true.</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>

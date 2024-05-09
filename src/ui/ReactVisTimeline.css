@@ -1,0 +1,6 @@
+/*
+Place your custom CSS here
+*/
+.fixed-height-timeline .vis-group {
+    height: 40px !important;
+}
