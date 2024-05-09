@@ -32,6 +32,7 @@ export function ReactVisTimeline({
     optionsOverrideItems,
     isSnap,
     eventItemId,
+    eventContent,
     eventStart,
     eventEnd,
     onAddAction}) {
@@ -65,6 +66,7 @@ export function ReactVisTimeline({
         optionsOverrideItems={optionsOverrideItems}
         isSnap={isSnap}
         eventItemId={eventItemId}
+        eventContent={eventContent}
         eventStart={eventStart}
         eventEnd={eventEnd}
         onAddAction={onAddAction}/>;

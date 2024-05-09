@@ -221,6 +221,13 @@
                     <attributeType name="String" />
                 </attributeTypes>
             </property>
+            <property key="eventContent" type="attribute">
+                <caption>Content</caption>
+                <description />
+                <attributeTypes>
+                    <attributeType name="String" />
+                </attributeTypes>
+            </property>
             <property key="eventStart" type="attribute">
                 <caption>Start Date</caption>
                 <description />

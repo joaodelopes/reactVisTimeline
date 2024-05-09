@@ -31,6 +31,7 @@ export function VisTimeline({
     optionsOverrideItems,
     isSnap, 
     eventItemId,
+    eventContent,
     eventStart,
     eventEnd,
     onAddAction
@@ -38,7 +39,7 @@ export function VisTimeline({
 
     if (!visItems || visItems.status !== "available" || !visItems.items) 
       return <div>Loading Items...</div>;
-    else if (!visGroups || visGroups.status !== "available" || !visGroups.items) 
+    else if (!visGroups || visGroups.status !== "available") 
       return <div>Loading Groups...</div>;
 
     // Definition of groups and TimelineOptions
@@ -67,33 +68,13 @@ export function VisTimeline({
         groupOrder: "order",
         onAdd: function (item, callback) {
           if (onAddAction && onAddAction.canExecute) {
-            eventStart.value = item.start;
-            eventEnd.value = item.end;
+            eventStart.setValue(item.start);
+            eventItemId.setValue(item.id);
+            eventContent.setValue(item.content);
             onAddAction.execute();
           }
-        },
+        }
     });
-
-
-
-
-    // Storing all the items
-    // let items = visItems.items.map(item => ({
-    //     id: ItemID.get(item).value,
-    //     start: Start.get(item).value,
-    //     end: End.get(item).value,
-    //     content: ItemContent.get(item).value,
-    //     className: ClassName.get(item).value,
-    //     editable: {
-    //         updateTime: IsUpdateTime.get(item).value,
-    //         updateGroup: IsUpdateGroup.get(item).value,
-    //         remove: IsRemove.get(item).value
-    //     },
-    //     type: ItemType.get(item).value,
-    //     group: Group.get(item).displayValue,
-    //     ClassName: ClassName.get(item).value,
-    //     Description: Description.get(item).value
-    // }));
 
     // The useEffect will occur when any value of the array changes, to help on the refresh of the widget that sometimes was failing
     useEffect(() => {
@@ -128,10 +109,11 @@ export function VisTimeline({
                   },
             zoomable: false,
             showMinorLabels: false,
-            groupHeights: groups.map(() => 40)
+            // groupHeights: groups.map(() => 40)
         }));
-    }, [visGroups.items, Width.value, Height.value, TimelineStart.value, TimelineEnd.value]);
+    }, [Width.value, Height.value, TimelineStart.value, TimelineEnd.value]);
 
+    // Use Effect for the Editable properties.
     useEffect(() => {
         setTimelineOptions(prevOptions => ({
             ...prevOptions,
@@ -151,48 +133,10 @@ export function VisTimeline({
         optionsOverrideItems.value
     ]);
 
-    // When the number of items is reduced, it's helping on the refresh that sometimes was failing
-    useEffect(() => {
-        if (items.length < 40) {
-            // Update the timelineOptions when an attribute changes
-            setTimeout(() => {
-                // Force a reflow
-                document.body.offsetWidth;
-                setGroups(
-                    visGroups.items.map((item, index) => ({
-                        id: GroupID.get(item).value,
-                        content: GroupContent.get(item).value,
-                        treeLevel: TreeLevel.get(item).value,
-                        nestedGroups:
-                            NestedGroups.get(item).value === "" ? null : JSON.parse(NestedGroups.get(item).value),
-                        order: index
-                    }))
-                );
-
-                setTimelineOptions(prevOptions => ({
-                    ...prevOptions,
-                    width: Width.value ? Width.value : null,
-                    height: Height.value ? Height.value : null, // height: Height.value === '' ? null : Height.value,
-                    start: TimelineStart.value ? TimelineStart.value : null,
-                    end: TimelineEnd.value ? TimelineEnd.value : null,
-                    // snap: !isSnap.value
-                    //     ? null // always snap to full hours, independent of the scale
-                    //     : function (date, scale, step) {
-                    //           var hour = 60 * 60 * 1000;
-                    //           return Math.round(date / hour) * hour;
-                    //       },
-                    // zoomable: false,
-                    // showMinorLabels: false,
-                    groupHeights: groups.map(() => 40)
-                }));
-            }, 200);
-        }
-    }, [items.length, Width.value, Height.value, TimelineStart.value, TimelineEnd.value]);
-
     return (
         <div>
             <Timeline
-                initialGroups={groups}
+                initialGroups={groups.length > 0 ? groups : null}
                 options={timelineOptions}
                 initialItems={visItems.items.map(item => ({
                   id: ItemID.get(item).value,
