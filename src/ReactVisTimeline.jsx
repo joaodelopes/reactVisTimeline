@@ -35,7 +35,10 @@ export function ReactVisTimeline({
     eventContent,
     eventStart,
     eventEnd,
-    onAddAction}) {
+    onAddAction,
+    onRemoveAction,
+    onUpdateAction,
+    onMoveAction}) {
 
     return <VisTimeline 
         visItems={visItems}
@@ -69,5 +72,8 @@ export function ReactVisTimeline({
         eventContent={eventContent}
         eventStart={eventStart}
         eventEnd={eventEnd}
-        onAddAction={onAddAction}/>;
+        onAddAction={onAddAction}
+        onRemoveAction={onRemoveAction}
+        onUpdateAction={onUpdateAction}
+        onMoveAction={onMoveAction}/>;
 }

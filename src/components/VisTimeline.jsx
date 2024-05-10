@@ -29,18 +29,27 @@ export function VisTimeline({
     optionsUpdateGroup,
     optionsUpdateTime,
     optionsOverrideItems,
-    isSnap, 
+    isSnap,
     eventItemId,
     eventContent,
     eventStart,
     eventEnd,
-    onAddAction
+    onAddAction,
+    onRemoveAction,
+    onUpdateAction,
+    onMoveAction
 }) {
-
     if (!visItems || visItems.status !== "available" || !visItems.items) 
-      return <div>Loading Items...</div>;
+        return <div>Loading Items...</div>;
     else if (!visGroups || visGroups.status !== "available") 
-      return <div>Loading Groups...</div>;
+        return <div>Loading Groups...</div>;
+
+    function mapEventItem(item) {
+        eventStart.setValue(item.start);
+        eventEnd.setValue(item.end);
+        eventItemId.setValue(item.id);
+        eventContent.setValue(item.content);
+    }
 
     // Definition of groups and TimelineOptions
     const [groups, setGroups] = useState([]);
@@ -67,12 +76,28 @@ export function VisTimeline({
         moveable: false,
         groupOrder: "order",
         onAdd: function (item, callback) {
-          if (onAddAction && onAddAction.canExecute) {
-            eventStart.setValue(item.start);
-            eventItemId.setValue(item.id);
-            eventContent.setValue(item.content);
-            onAddAction.execute();
-          }
+            if (onAddAction && onAddAction.canExecute) {
+                mapEventItem(item);
+                onAddAction.execute();
+            }
+        },
+        onMove: function (item, callback) {
+            if (onMoveAction && onMoveAction.canExecute) {
+                mapEventItem(item);
+                onMoveAction.execute();
+            }
+        },
+        onUpdate: function (item, callback) {
+            if (onUpdateAction && onUpdateAction.canExecute) {
+                mapEventItem(item);
+                onUpdateAction.execute();
+            }
+        },
+        onRemove: function (item, callback) {
+            if (onRemoveAction && onRemoveAction.canExecute) {
+                mapEventItem(item);
+                onRemoveAction.execute();
+            }
         }
     });
 
@@ -108,7 +133,7 @@ export function VisTimeline({
                       return Math.round(date / hour) * hour;
                   },
             zoomable: false,
-            showMinorLabels: false,
+            showMinorLabels: false
             // groupHeights: groups.map(() => 40)
         }));
     }, [Width.value, Height.value, TimelineStart.value, TimelineEnd.value]);
@@ -139,20 +164,20 @@ export function VisTimeline({
                 initialGroups={groups.length > 0 ? groups : null}
                 options={timelineOptions}
                 initialItems={visItems.items.map(item => ({
-                  id: ItemID.get(item).value,
-                  start: Start.get(item).value,
-                  end: End.get(item).value,
-                  content: ItemContent.get(item).value,
-                  className: ClassName.get(item).value,
-                  editable: {
-                      updateTime: IsUpdateTime.get(item).value,
-                      updateGroup: IsUpdateGroup.get(item).value,
-                      remove: IsRemove.get(item).value
-                  },
-                  type: ItemType.get(item).value,
-                  group: Group.get(item).displayValue,
-                  ClassName: ClassName.get(item).valuke,
-                  Description: Description.get(item).value
+                    id: ItemID.get(item).value,
+                    start: Start.get(item).value,
+                    end: End.get(item).value,
+                    content: ItemContent.get(item).value,
+                    className: ClassName.get(item).value,
+                    editable: {
+                        updateTime: IsUpdateTime.get(item).value,
+                        updateGroup: IsUpdateGroup.get(item).value,
+                        remove: IsRemove.get(item).value
+                    },
+                    type: ItemType.get(item).value,
+                    group: Group.get(item).displayValue,
+                    ClassName: ClassName.get(item).valuke,
+                    Description: Description.get(item).value
                     // title: `${Description.get(item).value}` // Include the tooltip content in the title property
                 }))}
                 // itemTouchSendsClick={false}
